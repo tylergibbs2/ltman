@@ -1,3 +1,4 @@
 .vscode/
 ltman-env/
 ffmpeg.exe
+*.pyc
