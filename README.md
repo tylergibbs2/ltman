@@ -8,6 +8,8 @@
 
 ## Installation
 
+Ensure that `ffmpeg` is included in your PATH environment variable.
+
 - `git clone https://github.com/tylergibbs2/ltman`
 - `cd ltman`
 - `python -m pip install -r requirements.txt`
