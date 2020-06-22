@@ -1,19 +1,21 @@
 from typing import List
 
 import tqdm
+from validators import url, ValidationFailure
 
 from ltman.ffmpeg import file_to_mp3, normalize_audio
 from ltman.ytdl import download_link
 
 
-def process_links(links: List[str]) -> None:
+def process_all(all_: List[str]) -> None:
     """
-    Process a list of links via the process_link function.
+    Processes all strings and will pass
+    it to the respective function.
 
     Parameters
     ----------
-    links: List[str]
-        A list of links to process.
+    all_: List[str]
+        Any type of reference.
 
     Returns
     -------
@@ -21,15 +23,19 @@ def process_links(links: List[str]) -> None:
     """
     bar = tqdm.tqdm(
         bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt}",
-        total=len(links),
+        total=len(all_),
         position=0
     )
 
-    for link in links:
-        bar.set_description_str(f"Current link: {link}")
-        process_link(link)
-        bar.update(1)
+    for item in all_:
+        bar.set_description_str(f"Current item: {item}")
 
+        if url(item) == True:
+            process_link(item)
+        else:
+            normalize_audio(item)
+
+        bar.update(1)
 
 def process_link(link: str) -> None:
     """

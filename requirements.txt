@@ -1,3 +1,4 @@
 ffmpeg-normalize
 tqdm
 youtube-dl
+validators
