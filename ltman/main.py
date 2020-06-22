@@ -1,10 +1,12 @@
 from typing import List
 
+import tqdm
+
 from ltman.ffmpeg import file_to_mp3, normalize_audio
 from ltman.ytdl import download_link
 
 
-def process_links(links: List[str]) -> List[bool]:
+def process_links(links: List[str]) -> None:
     """
     Process a list of links via the process_link function.
 
@@ -15,13 +17,21 @@ def process_links(links: List[str]) -> List[bool]:
 
     Returns
     -------
-    List[bool]:
-        A list of result statuses.
+    None
     """
-    return [process_link(link) for link in links]
+    bar = tqdm.tqdm(
+        bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt}",
+        total=len(links),
+        position=0
+    )
+
+    for link in links:
+        bar.set_description_str(f"Current link: {link}")
+        process_link(link)
+        bar.update(1)
 
 
-def process_link(link: str) -> bool:
+def process_link(link: str) -> None:
     """
     Processes a link for downloading (ytdl),
     converting (ffmpeg), and normalizing (ffmpeg).
@@ -33,8 +43,7 @@ def process_link(link: str) -> bool:
 
     Returns
     -------
-    bool:
-        The result of the processing.
+    None
     """
     downloaded = download_link(link)
 
