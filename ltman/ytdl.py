@@ -29,8 +29,12 @@ def download_link(link: str) -> str:
     """
     with youtube_dl.YoutubeDL(ytdl_opts) as downloader:
         info_dict = downloader.extract_info(link, download=True)
-        entry = info_dict["entries"][0]
-        downloaded = f"{entry['title']}-{entry['id']}.{entry['ext']}"
-        downloaded = youtube_dl.utils.sanitize_filename(downloaded, restricted=True)
+
+        try:
+            entry = info_dict["entries"][0]
+        except KeyError:
+            entry = info_dict
+
+        downloaded = downloader.prepare_filename(entry)
 
     return downloaded
