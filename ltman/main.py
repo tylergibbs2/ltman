@@ -1,5 +1,8 @@
 from typing import List
 
+from ltman.ffmpeg import file_to_mp3, normalize_audio
+from ltman.ytdl import download_link
+
 
 def process_links(links: List[str]) -> List[bool]:
     """
@@ -33,4 +36,8 @@ def process_link(link: str) -> bool:
     bool:
         The result of the processing.
     """
-    pass
+    downloaded = download_link(link)
+
+    converted = file_to_mp3(downloaded)
+
+    normalize_audio(converted)
