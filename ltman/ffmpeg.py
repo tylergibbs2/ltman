@@ -40,5 +40,5 @@ def normalize_audio(file_name: str) -> None:
     -------
     None
     """
-    os.system(f"ffmpeg-normalize {file_name} -of output -c:a libmp3lame -ext mp3 -q")
+    os.system(f"ffmpeg-normalize {file_name} -of output -c:a libmp3lame -ext mp3 -q --target-level -5")
     os.remove(file_name)
