@@ -32,8 +32,11 @@ def process_all(all_: List[str]) -> None:
 
         if url(item) == True:
             process_link(item)
-        else:
+        elif item.endswith("mp3"):
             normalize_audio(item)
+        else:
+            converted = file_to_mp3(item)
+            normalize_audio(converted)
 
         bar.update(1)
 
