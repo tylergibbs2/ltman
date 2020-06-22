@@ -5,6 +5,8 @@ import youtube_dl
 
 ytdl_opts = {
     "format": "bestaudio/best",
+    "quiet": True,
+    "no_warnings": True,
     "outmpl": "%(title)s-%(id)s.%(ext)s",
     "restrictfilenames": True
 }
