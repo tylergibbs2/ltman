@@ -1,7 +1,7 @@
 from typing import List
 
 import tqdm
-from validators import url, ValidationFailure
+from validators import url
 
 from ltman.ffmpeg import file_to_mp3, normalize_audio
 from ltman.ytdl import download_link
