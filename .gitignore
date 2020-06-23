@@ -2,3 +2,4 @@
 ltman-env/
 ffmpeg.exe
 *.pyc
+output/
