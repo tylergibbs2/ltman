@@ -1,4 +1,6 @@
 import argparse
+import pathlib
+from typing import List
 
 from ltman.main import process_all
 
@@ -9,12 +11,37 @@ parser.add_argument("links", type=str, nargs="+", help="Links to process.")
 
 args = parser.parse_args()
 
-if __name__ == "__main__":
-    to_process = []
-    for link in args.links:
-        if link.endswith("txt"):
-            with open(link, "r") as f:
-                to_process += f.readlines()
+def retrieve(passed: List[str]) -> List[str]:
+    """
+    Retrieves all items that are able to be
+    converted, recursively, from the passed list.
+
+    Parameters
+    ----------
+    passed: List[str]
+        The items to search.
+
+    Returns
+    -------
+    List[str]:
+        All found items.
+    """
+    ret = []
+
+    for item in passed:
+        if item.endswith("txt"):
+            with open(item, "r") as f:
+                ret += retrieve(f.readlines())
+        elif pathlib.Path(item).exists():
+            path = pathlib.Path(item)
+            if path.is_file():
+                ret.append(str(path))
+            elif path.is_dir():
+                ret += retrieve([str(p) for p in path.iterdir()])
         else:
-            to_process.append(link)
-    process_all(to_process)
+            ret.append(item)
+
+    return ret
+
+if __name__ == "__main__":
+    process_all(retrieve(args.links))
