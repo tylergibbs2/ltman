@@ -29,16 +29,17 @@ def retrieve(passed: List[str]) -> List[str]:
     ret = []
 
     for item in passed:
-        if item.endswith("txt"):
-            with open(item, "r") as f:
-                ret += retrieve(f.readlines())
-        elif pathlib.Path(item).exists():
+        try:
             path = pathlib.Path(item)
-            if path.is_file():
+            if path.is_file() and path.suffix == ".txt":
+                ret += retrieve(path.read_text().split("\n"))
+            elif path.is_file():
                 ret.append(str(path))
             elif path.is_dir():
                 ret += retrieve([str(p) for p in path.iterdir()])
-        else:
+            else:
+                ret.append(item)
+        except OSError:
             ret.append(item)
 
     return ret
